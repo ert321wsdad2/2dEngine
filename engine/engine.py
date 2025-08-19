@@ -41,6 +41,7 @@ class Camera:
             max_y = self.world_bounds.height - self.viewport_size.y
             self.position.x = max(self.world_bounds.left, min(self.position.x, max_x))
             self.position.y = max(self.world_bounds.top, min(self.position.y, max_y))
+from typing import List, Optional
 
 
 class GameObject:
@@ -170,6 +171,8 @@ class Scene:
 
     def add(self, obj: GameObject) -> GameObject:
         obj.scene = self
+
+    def add(self, obj: GameObject) -> GameObject:
         self.game_objects.append(obj)
         return obj
 
@@ -177,7 +180,6 @@ class Scene:
         if obj in self.game_objects:
             self.game_objects.remove(obj)
             obj.scene = None
-
     def handle_event(self, event: pygame.event.Event) -> None:
         for obj in list(self.game_objects):
             obj.on_event(event)
@@ -216,7 +218,11 @@ class Game:
         self.scene = scene
         if self.scene.camera is None:
             self.scene.camera = Camera(self.width, self.height)
+        self._running = False
+        self._show_fps = True
 
+    def set_scene(self, scene: Scene) -> None:
+        self.scene = scene
     def stop(self) -> None:
         self._running = False
 
@@ -228,6 +234,7 @@ class Game:
                     self._running = False
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_F3:
                     self._show_debug = not self._show_debug
+
                 else:
                     self.scene.handle_event(event)
 
@@ -240,6 +247,8 @@ class Game:
 
             if self._show_debug:
                 self._draw_debug_overlay(dt)
+            if self._show_fps:
+                self._draw_fps_overlay()
 
             pygame.display.flip()
 
@@ -282,3 +291,10 @@ class Game:
             self.screen.blit(box, (rect.left - pad, rect.top - pad))
             self.screen.blit(surf, rect)
             y += rect.height + 6
+
+    def _draw_fps_overlay(self) -> None:
+        fps = self.clock.get_fps()
+        font = pygame.font.SysFont("consolas", 16)
+        text = font.render(f"{fps:5.1f} FPS", True, (180, 180, 180))
+        self.screen.blit(text, (8, 8))
+

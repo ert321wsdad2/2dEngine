@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame
 from engine import Game, Scene, GameObject, TileMap
-
+from engine import Game, Scene, GameObject
 
 class Player(GameObject):
     def __init__(self, x: float, y: float, color: tuple[int, int, int] = (80, 180, 255)) -> None:
@@ -33,6 +33,11 @@ class Player(GameObject):
             return
         rect = pygame.Rect(int(self.position.x), int(self.position.y), int(self.size.x), int(self.size.y))
         rect.topleft = camera.world_to_screen(rect.topleft)
+        self.position.x = max(0, min(self.position.x, 960 - self.size.x))
+        self.position.y = max(0, min(self.position.y, 540 - self.size.y))
+
+    def draw(self, surface: pygame.Surface) -> None:
+        rect = pygame.Rect(int(self.position.x), int(self.position.y), int(self.size.x), int(self.size.y))
         pygame.draw.rect(surface, self.color, rect, border_radius=8)
 
 
@@ -46,6 +51,9 @@ def main() -> None:
 
     scene.camera.set_target(player)
 
+    game = Game(width=960, height=540, title="Мини-движок на Pygame")
+    scene = Scene()
+    scene.add(Player(200, 200))
     game.set_scene(scene)
     game.run()
 
