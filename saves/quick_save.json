@@ -1,0 +1,68 @@
+{
+  "player": {
+    "pos": [
+      128.0,
+      128.0
+    ],
+    "hp": 100.0
+  },
+  "enemies": [
+    {
+      "pos": [
+        1670.0,
+        1236.0
+      ],
+      "hp": 50.0
+    },
+    {
+      "pos": [
+        2580.0,
+        2400.0
+      ],
+      "hp": 50.0
+    }
+  ],
+  "config": {
+    "lang": "ru",
+    "graphics": {
+      "scale": 1.0
+    },
+    "audio": {
+      "master_volume": 1.0
+    },
+    "input": {
+      "move_up": [
+        "K_w",
+        "K_UP"
+      ],
+      "move_down": [
+        "K_s",
+        "K_DOWN"
+      ],
+      "move_left": [
+        "K_a",
+        "K_LEFT"
+      ],
+      "move_right": [
+        "K_d",
+        "K_RIGHT"
+      ],
+      "fire": [
+        "MOUSE_LEFT",
+        "JOY_BTN_0"
+      ],
+      "interact": [
+        "K_e"
+      ],
+      "pause": [
+        "K_ESCAPE"
+      ],
+      "quicksave": [
+        "K_F5"
+      ],
+      "quickload": [
+        "K_F9"
+      ]
+    }
+  }
+}
