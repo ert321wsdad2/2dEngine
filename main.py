@@ -28,13 +28,11 @@ class Player(GameObject):
         self.position += direction * self.speed_pixels_per_second * dt
 
     def draw(self, surface: pygame.Surface) -> None:
-        # Draw using scene camera transform
         camera = self.scene.camera if self.scene is not None else None
         if camera is None:
             return
         rect = pygame.Rect(int(self.position.x), int(self.position.y), int(self.size.x), int(self.size.y))
-        screen_pos = camera.world_to_screen((rect.x, rect.y))
-        rect.topleft = screen_pos
+        rect.topleft = camera.world_to_screen(rect.topleft)
         pygame.draw.rect(surface, self.color, rect, border_radius=8)
 
 
@@ -42,13 +40,10 @@ def main() -> None:
     game = Game(width=1280, height=720, title="Мини-движок на Pygame")
     scene = Scene()
 
-    # Create a tile map and enable editing with E, paint with LMB, erase with RMB, 1-9 to change tile.
     tilemap = scene.add(TileMap(width_in_tiles=200, height_in_tiles=200, tile_size=32))
 
-    # Player
     player = scene.add(Player(200, 200))
 
-    # Camera follow player
     scene.camera.set_target(player)
 
     game.set_scene(scene)
